@@ -1,0 +1,1 @@
+setInterval(f2, 1000);
