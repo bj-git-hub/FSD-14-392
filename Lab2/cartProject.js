@@ -32,9 +32,22 @@ const displayCart = async () => {
   }
   console.table(cart);
   const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-  console.log(`Total payble amount Rs. ${total}`);
+  console.log(`Total payable amount Rs. ${total}`);
 };
 
+const removeProduct = async (pid) => {
+  const cart = await getCart();
+  // const isFoundInCart = cart.find((item) => item.id === pid);
+  let x = cart.length;
+  const newProduct = cart.filter((item) => item.id !== pid);
+  let y = newProduct.length;
+  if (y < x) {
+    saveCart(newProduct);
+    console.log(`Product with ID ${pid} has been deleted.`);
+  } else {
+    console.log(`Product with ID ${pid} is not in the cart.`);
+  }
+};
 const main = async () => {
   let choice;
   const cin = readline.createInterface({ input: stdin, output: stdout });
@@ -65,11 +78,14 @@ const main = async () => {
         break;
 
       case 3:
-        console.log("remove product");
+        var pid = await cin.question("Enter the product Id which has to be removed: ",);
+        await removeProduct(Number(pid));
         break;
+
       case 4:
-        console.log("update quantity");
+        console.log("Update");
         break;
+
       case 5:
         console.log("checkout");
         break;
