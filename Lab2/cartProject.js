@@ -48,6 +48,21 @@ const removeProduct = async (pid) => {
     console.log(`Product with ID ${pid} is not in the cart.`);
   }
 };
+
+const updateCart = async(pid) => {
+  const cart = await getCart();
+  const isFoundInCart = cart.find((item) => item.id === pid);
+  if (isFoundInCart) {
+    isFoundInCart.qty -=1;
+    await saveCart(cart);
+    console.log(`Quantity of Product with ID ${pid}} added/updated to 🛒`);
+  }
+  else{
+    console.log("Product is not in the cart");
+  }
+  
+
+}
 const main = async () => {
   let choice;
   const cin = readline.createInterface({ input: stdin, output: stdout });
@@ -78,13 +93,13 @@ const main = async () => {
         break;
 
       case 3:
-        var pid = await cin.question("Enter the product Id which has to be removed: ",);
+        var pid = await cin.question("Enter the product Id which has to be removed: ");
         await removeProduct(Number(pid));
         break;
 
       case 4:
-        console.log("Update");
-        break;
+        pid = await cin.question("Enter the ID of the product which has to be updated: ");
+        await updateCart(Number(pid));
 
       case 5:
         console.log("checkout");
