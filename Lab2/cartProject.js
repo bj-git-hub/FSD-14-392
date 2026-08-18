@@ -53,9 +53,14 @@ const updateCart = async(pid) => {
   const cart = await getCart();
   const isFoundInCart = cart.find((item) => item.id === pid);
   if (isFoundInCart) {
+    if(isFoundInCart.qty == 1){
+      await removeProduct(pid);
+    }
+    else{
     isFoundInCart.qty -=1;
     await saveCart(cart);
-    console.log(`Quantity of Product with ID ${pid}} added/updated to 🛒`);
+  }
+    console.log(`Quantity of Product with ID ${pid} added/updated to 🛒`);
   }
   else{
     console.log("Product is not in the cart");
@@ -98,7 +103,7 @@ const main = async () => {
         break;
 
       case 4:
-        pid = await cin.question("Enter the ID of the product which has to be updated: ");
+        pid = await cin.question("Enter the ID of the product which has to be updated and the update required(+/-): ");
         await updateCart(Number(pid));
 
       case 5:
